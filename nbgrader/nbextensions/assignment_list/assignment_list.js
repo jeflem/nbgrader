@@ -115,12 +115,12 @@ define([
     CourseList.prototype.change_course = function (course) {
         this.disable_list();
         if (this.current_course !== undefined) {
-            this.default_course_element.text(course);
+            this.default_course_element.text(course['course_title']);
         }
         this.current_course = course;
-        this.default_course_element.text(this.current_course);
+        this.default_course_element.text(this.current_course['course_title']);
         var success = $.proxy(this.load_assignment_list_success, this);
-        this.assignment_list.load_list(course, success);
+        this.assignment_list.load_list(course['course_id'], success);
     };
 
 
@@ -132,7 +132,7 @@ define([
             }
 
             for (var i=0; i<this.data.length; i++) {
-                var element = $('<li/>').append($('<a/>').attr("href", "#").text(this.data[i]));
+                var element = $('<li/>').append($('<a/>').attr("href", "#").text(this.data[i]['course_title']));
                 element.click(set_course(this.data[i]));
                 this.course_list_element.append(element);
             }

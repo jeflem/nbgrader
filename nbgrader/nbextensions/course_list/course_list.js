@@ -108,6 +108,7 @@ define([
     var Course = function (element, data, parent, on_refresh, options) {
         this.element = $(element);
         this.course_id = data['course_id'];
+        this.course_title = data['course_title'];
         this.formgrader_kind = data['kind'];
         this.url = data['url'];
         this.parent = parent;
@@ -123,17 +124,17 @@ define([
 
     Course.prototype.make_row = function () {
         var row = $('<div/>').addClass('col-md-12');
-        var course_id = this.course_id;
+        var course_title = this.course_title;
 
-        if(course_id === '') {
-            course_id = 'Default formgrader';
+        if(course_title === '') {
+            course_title = 'Default formgrader';
         }
 
         var container = $('<span/>').addClass('item_name col-sm-2').append(
             $('<a/>')
                 .attr('href', this.url)
                 .attr('target', '_blank')
-                .text(course_id));
+                .text(course_title));
         row.append(container);
         row.append($('<span/>').addClass('item_course col-sm-2').text(this.formgrader_kind));
         this.element.empty().append(row);
