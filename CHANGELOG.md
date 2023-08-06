@@ -4,6 +4,40 @@ A summary of changes to nbgrader.
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.9.0a1
+
+([Full Changelog](https://github.com/jupyter/nbgrader/compare/v0.9.0a0...2d7dc7c0b758c5f61a34b7cc4a0fd2f04d748bb4))
+
+### Bugs fixed
+
+- Fix binder exchange [#1803](https://github.com/jupyter/nbgrader/pull/1803) ([@brichet](https://github.com/brichet))
+
+### Maintenance and upkeep improvements
+
+- Update notebook dependency to final release [#1805](https://github.com/jupyter/nbgrader/pull/1805) ([@brichet](https://github.com/brichet))
+
+### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/jupyter/nbgrader/graphs/contributors?from=2023-07-18&to=2023-07-21&type=c))
+
+[@brichet](https://github.com/search?q=repo%3Ajupyter%2Fnbgrader+involves%3Abrichet+updated%3A2023-07-18..2023-07-21&type=Issues) | [@github-actions](https://github.com/search?q=repo%3Ajupyter%2Fnbgrader+involves%3Agithub-actions+updated%3A2023-07-18..2023-07-21&type=Issues)
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
+## 0.9.0a0
+
+([Full Changelog](https://github.com/jupyter/nbgrader/compare/v0.8.4...1b5ffa93db15012f15ac17bf475eab2420fe73bf))
+
+### Enhancements made
+
+- Compatibility with Notebook7 and jupyterLab4 [#1684](https://github.com/jupyter/nbgrader/pull/1684) ([@brichet](https://github.com/brichet))
+
+### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/jupyter/nbgrader/graphs/contributors?from=2023-06-16&to=2023-07-18&type=c))
+
+[@brichet](https://github.com/search?q=repo%3Ajupyter%2Fnbgrader+involves%3Abrichet+updated%3A2023-06-16..2023-07-18&type=Issues) | [@github-actions](https://github.com/search?q=repo%3Ajupyter%2Fnbgrader+involves%3Agithub-actions+updated%3A2023-06-16..2023-07-18&type=Issues) | [@jtpio](https://github.com/search?q=repo%3Ajupyter%2Fnbgrader+involves%3Ajtpio+updated%3A2023-06-16..2023-07-18&type=Issues)
+
 ## 0.8.4
 
 ([Full Changelog](https://github.com/jupyter/nbgrader/compare/v0.8.3...83a0429e32e5d146a638dfeef6cee9fad7f277ab))
@@ -23,8 +57,6 @@ A summary of changes to nbgrader.
 ([GitHub contributors page for this release](https://github.com/jupyter/nbgrader/graphs/contributors?from=2023-06-15&to=2023-06-16&type=c))
 
 [@brichet](https://github.com/search?q=repo%3Ajupyter%2Fnbgrader+involves%3Abrichet+updated%3A2023-06-15..2023-06-16&type=Issues) | [@github-actions](https://github.com/search?q=repo%3Ajupyter%2Fnbgrader+involves%3Agithub-actions+updated%3A2023-06-15..2023-06-16&type=Issues) | [@tuncbkose](https://github.com/search?q=repo%3Ajupyter%2Fnbgrader+involves%3Atuncbkose+updated%3A2023-06-15..2023-06-16&type=Issues)
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.8.3
 
