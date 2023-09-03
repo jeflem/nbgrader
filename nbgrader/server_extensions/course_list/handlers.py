@@ -93,7 +93,7 @@ class CourseListHandler(JupyterHandler):
             raise gen.Return([{
                 'course_id': coursedir.course_id,
                 'course_title': title,
-                'url': base_url + '/formgrader',
+                'url': base_url + '/lab',
                 'kind': 'local'
             }])
 
@@ -116,7 +116,7 @@ class CourseListHandler(JupyterHandler):
         if not coursedir.course_id:
             raise gen.Return([])
 
-        url = self.get_base_url() + "/services/" + coursedir.course_id + "/formgrader"
+        url = self.get_base_url() + "/services/" + coursedir.course_id
         auth = get_jupyterhub_authorization()
         http_client = AsyncHTTPClient()
         try:
@@ -131,7 +131,7 @@ class CourseListHandler(JupyterHandler):
         courses = [{
             'course_id': coursedir.course_id,
             'course_title': title,
-            'url': url,
+            'url': url + "/lab",
             'kind': 'jupyterhub'
         }]
         raise gen.Return(courses)
@@ -179,7 +179,7 @@ class CourseListHandler(JupyterHandler):
             courses.append({
                 'course_id': course,
                 'course_title': title,
-                'url': self.get_base_url() + service['prefix'].rstrip('/') + "/formgrader",
+                'url': self.get_base_url() + service['prefix'].rstrip('/') + "/lab",
                 'kind': 'jupyterhub'
             })
 
@@ -256,11 +256,7 @@ def load_jupyter_server_extension(nbapp):
     webapp = nbapp.web_app
     base_url = webapp.settings['base_url']
 
-    # compatibility between notebook.notebookapp.NotebookApp and jupyter_server.serverapp.ServerApp
-    if nbapp.name == 'jupyter-notebook':
-        webapp.settings['assignment_dir'] = nbapp.notebook_dir
-    else:
-        webapp.settings['assignment_dir'] = nbapp.root_dir
+    webapp.settings['assignment_dir'] = nbapp.root_dir
 
     webapp.add_handlers(".*$", [
         (ujoin(base_url, pat), handler)
