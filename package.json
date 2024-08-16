@@ -1,6 +1,6 @@
 {
-  "name": "nbgrader",
-  "version": "0.9.1",
+  "name": "@jupyter/nbgrader",
+  "version": "0.9.3",
   "description": "nbgrader nodejs dependencies",
   "keywords": [
     "jupyter",
@@ -35,38 +35,38 @@
     "clean:labextension": "rimraf nbgrader/labextension",
     "clean:all": "jlpm clean:lib && jlpm clean:labextension",
     "install:labextension": "jlpm build",
-    "start:test": "python ./nbgrader/tests/ui-tests/utils/run_jupyter_lab.py",
-    "start:test:notebook": "python ./nbgrader/tests/ui-tests/utils/run_jupyter_notebook.py",
+    "start:test": "python ./nbgrader/tests/ui-tests/utils/run_jupyter_app.py",
     "test": "jlpm playwright test",
-    "test:notebook": "jlpm playwright test --config=playwright.notebook.config.ts",
+    "test:notebook": "NBGRADER_TEST_IS_NOTEBOOK=1 jlpm playwright test --config=playwright.notebook.config.ts",
     "watch": "run-p watch:src watch:labextension",
     "watch:src": "tsc -w",
     "watch:labextension": "jupyter labextension watch ."
   },
   "dependencies": {
-    "@jupyter-notebook/application": "^7.0.2",
-    "@jupyter-notebook/tree": "^7.0.2",
-    "@jupyter/ydoc": "^1.0.2",
-    "@jupyterlab/application": "^4.0.4",
-    "@jupyterlab/apputils": "^4.1.4",
-    "@jupyterlab/cells": "^4.0.4",
-    "@jupyterlab/coreutils": "^6.0.4",
-    "@jupyterlab/docregistry": "^4.0.4",
-    "@jupyterlab/mainmenu": "^4.0.4",
-    "@jupyterlab/nbformat": "^4.0.4",
-    "@jupyterlab/notebook": "^4.0.4",
-    "@jupyterlab/observables": "^5.0.4",
-    "@jupyterlab/services": "^7.0.4",
-    "@jupyterlab/settingregistry": "^4.0.4",
+    "@jupyter-notebook/application": "^7.2.0",
+    "@jupyter-notebook/tree": "^7.2.0",
+    "@jupyter/ydoc": "^2.0.0",
+    "@jupyterlab/application": "^4.2.0",
+    "@jupyterlab/apputils": "^4.3.0",
+    "@jupyterlab/cells": "^4.2.0",
+    "@jupyterlab/coreutils": "^6.2.0",
+    "@jupyterlab/docregistry": "^4.2.0",
+    "@jupyterlab/filebrowser": "^4.2.0",
+    "@jupyterlab/mainmenu": "^4.2.0",
+    "@jupyterlab/nbformat": "^4.2.0",
+    "@jupyterlab/notebook": "^4.2.0",
+    "@jupyterlab/observables": "^5.2.0",
+    "@jupyterlab/services": "^7.2.0",
+    "@jupyterlab/settingregistry": "^4.2.0",
     "@lumino/coreutils": "^2.1.2",
     "@lumino/disposable": "^2.1.2",
     "@lumino/messaging": "^2.0.1",
     "@lumino/signaling": "^2.1.2",
-    "@lumino/widgets": "^2.3.0"
+    "@lumino/widgets": "^2.3.2"
   },
   "devDependencies": {
-    "@jupyterlab/builder": "^4.0.4",
-    "@jupyterlab/galata": "^5.0.4",
+    "@jupyterlab/builder": "^4.2.0",
+    "@jupyterlab/galata": "^5.2.0",
     "@playwright/test": "^1.32.2",
     "@types/codemirror": "^5.60.5",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
@@ -107,6 +107,7 @@
       }
     },
     "extension": true,
-    "outputDir": "nbgrader/labextension"
+    "outputDir": "nbgrader/labextension",
+    "schemaDir": "schema"
   }
 }

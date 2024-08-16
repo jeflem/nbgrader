@@ -10,7 +10,7 @@ import { requestAPI } from './validateassignment';
 
 import { showNbGraderDialog, validate } from '../common/validate';
 
-var nbgrader_version = "0.9.1"; // TODO: hardcoded value
+var nbgrader_version = "0.9.3"; // TODO: hardcoded value
 
 class ValidateButton extends ToolbarButton {
   private _buttonCallback = this.newButtonCallback();
@@ -133,7 +133,7 @@ class ValidateButton extends ToolbarButton {
   }
 
   private setButtonDisabled(disabled: boolean = true): void {
-    const button = this.node.getElementsByTagName('button')[0];
+    const button = this.node.getElementsByTagName('jp-button')[0];
     if (disabled) {
       button.setAttribute('disabled', 'disabled');
     } else {

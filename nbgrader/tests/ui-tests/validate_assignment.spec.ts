@@ -63,6 +63,17 @@ test.beforeEach(async ({ request, tmpPath }) => {
   if (request === undefined) throw new Error("Request is undefined.");
 
   const contents = galata.newContentsHelper(request);
+
+  if (await contents.fileExists("nbgrader_config.py")) {
+    await contents.deleteFile("nbgrader_config.py");
+  }
+  await contents.uploadFile(
+    path.resolve(__dirname, "./files/nbgrader_config.py"),
+    "nbgrader_config.py"
+  );
+
+  await contents.createDirectory(tmpPath);
+
   nbFiles.forEach((elem) => {
     contents.uploadFile(
       path.resolve(__dirname, `./files/${elem}`),
@@ -74,41 +85,20 @@ test.beforeEach(async ({ request, tmpPath }) => {
 /*
  * Delete temp directory at the end of test
  */
-test.afterAll(async ({ request, tmpPath }) => {
+test.afterEach(async ({ request, page, tmpPath }) => {
   if (request === undefined) throw new Error("Request is undefined.");
 
-  const contents = galata.newContentsHelper(request);
+  if (!isNotebook) {
+    // Close opened notebook.
+    while (await page.notebook.isAnyActive()) {
+      await page.notebook.close();
+    }
+  }
+  await page.kernel.shutdownAll();
+
+  const contents = galata.newContentsHelper(request, page);
   await contents.deleteDirectory(tmpPath);
-
-  if (await contents.fileExists("nbgrader_config.py"))
-    contents.deleteFile("nbgrader_config.py");
-  contents.uploadFile(
-    path.resolve(__dirname, "./files/nbgrader_config.py"),
-    "nbgrader_config.py"
-  );
 });
-
-/*
- * Open a notebook file.
- * NOTES:
- *  This function is only useful if testing extension in JupyterLab.
- *  In Notebook tests we open a new browser tab instead.
- */
-const openNotebook = async (page: IJupyterLabPageFixture, notebook: string) => {
-  var filename = notebook + ".ipynb";
-  var tab_count = await page
-    .locator("#jp-main-dock-panel .lm-TabBar-tab")
-    .count();
-  await page
-    .locator(
-      `#filebrowser .jp-DirListing-content .jp-DirListing-itemText span:text-is('${filename}')`
-    )
-    .dblclick();
-  await expect(page.locator("#jp-main-dock-panel .lm-TabBar-tab")).toHaveCount(
-    tab_count + 1
-  );
-  await page.waitForSelector(".jp-Notebook-cell");
-};
 
 /*
  * Test validation success
@@ -119,11 +109,12 @@ test("Validation success", async ({ page, tmpPath }) => {
   if (isNotebook) {
     await page.goto(`notebooks/${tmpPath}/submitted-changed.ipynb`);
   } else {
-    await openNotebook(page, "submitted-changed");
+    await page.notebook.open("submitted-changed.ipynb");
+    await page.notebook.activate("submitted-changed.ipynb");
   }
 
   // click on validate, and expect a success modal
-  await page.locator("button.validate-button").click();
+  await page.locator("jp-button.validate-button").click();
   await waitForSuccessModal(page);
 
   // close the modal
@@ -139,14 +130,15 @@ test("Validation failure", async ({ page, tmpPath }) => {
   if (isNotebook) {
     await page.goto(`notebooks/${tmpPath}/submitted-unchanged.ipynb`);
   } else {
-    await openNotebook(page, "submitted-unchanged");
+    await page.notebook.open("submitted-unchanged.ipynb");
+    await page.notebook.activate("submitted-unchanged.ipynb");
   }
 
   // click on validate, and expect an error modal
-  await page.locator("button.validate-button").click();
+  await page.locator("jp-button.validate-button").click();
   await waitForErrorModal(page);
 
-  await page.waitForSelector(".nbgrader-ErrorDialog .validation-failed");
+  await page.locator(".nbgrader-ErrorDialog .validation-failed").waitFor();
 
   // close the modal
   await closeErrorModal(page);
@@ -161,14 +153,15 @@ test("Validation grade cell changed", async ({ page, tmpPath }) => {
   if (isNotebook) {
     await page.goto(`notebooks/${tmpPath}/submitted-grade-cell-changed.ipynb`);
   } else {
-    await openNotebook(page, "submitted-grade-cell-changed");
+    await page.notebook.open("submitted-grade-cell-changed.ipynb");
+    await page.notebook.activate("submitted-grade-cell-changed.ipynb");
   }
 
   // click on validate, and expect an error modal
-  await page.locator("button.validate-button").click();
+  await page.locator("jp-button.validate-button").click();
   await waitForErrorModal(page);
 
-  await page.waitForSelector(".nbgrader-ErrorDialog .validation-changed");
+  await page.locator(".nbgrader-ErrorDialog .validation-changed").waitFor();
 
   // close the modal
   await closeErrorModal(page);
@@ -183,14 +176,15 @@ test("Validation locked cell changed", async ({ page, tmpPath }) => {
   if (isNotebook) {
     await page.goto(`notebooks/${tmpPath}/submitted-locked-cell-changed.ipynb`);
   } else {
-    await openNotebook(page, "submitted-locked-cell-changed");
+    await page.notebook.open("submitted-locked-cell-changed.ipynb");
+    await page.notebook.activate("submitted-locked-cell-changed.ipynb");
   }
 
   // click on validate, and expect an error modal
-  await page.locator("button.validate-button").click();
+  await page.locator("jp-button.validate-button").click();
   await waitForErrorModal(page);
 
-  await page.waitForSelector(".nbgrader-ErrorDialog .validation-changed");
+  await page.locator(".nbgrader-ErrorDialog .validation-changed").waitFor();
 
   // close the modal
   await closeErrorModal(page);
@@ -205,14 +199,15 @@ test("Validation open relative file", async ({ page, tmpPath }) => {
   if (isNotebook) {
     await page.goto(`notebooks/${tmpPath}/open_relative_file.ipynb`);
   } else {
-    await openNotebook(page, "open_relative_file");
+    await page.notebook.open("open_relative_file.ipynb");
+    await page.notebook.activate("open_relative_file.ipynb");
   }
 
   // click on validate, and expect a success modal
-  await page.locator("button.validate-button").click();
+  await page.locator("jp-button.validate-button").click();
   await waitForSuccessModal(page);
 
-  await page.waitForSelector(".nbgrader-SuccessDialog .validation-success");
+  await page.locator(".nbgrader-SuccessDialog .validation-success").waitFor();
 
   // close the modal
   await closeSuccessModal(page);
@@ -227,14 +222,15 @@ test("Validation grade cell type changed", async ({ page, tmpPath }) => {
   if (isNotebook) {
     await page.goto(`notebooks/${tmpPath}/submitted-grade-cell-type-changed.ipynb`);
   } else {
-    await openNotebook(page, "submitted-grade-cell-type-changed");
+    await page.notebook.open("submitted-grade-cell-type-changed.ipynb");
+    await page.notebook.activate("submitted-grade-cell-type-changed.ipynb");
   }
 
   // click on validate, and expect an error modal
-  await page.locator("button.validate-button").click();
+  await page.locator("jp-button.validate-button").click();
   await waitForErrorModal(page);
 
-  await page.waitForSelector(".nbgrader-ErrorDialog .validation-type-changed");
+  await page.locator(".nbgrader-ErrorDialog .validation-type-changed").waitFor();
 
   // close the modal
   await closeErrorModal(page);
@@ -249,14 +245,15 @@ test("Validation answer cell type changed", async ({ page, tmpPath }) => {
   if (isNotebook) {
     await page.goto(`notebooks/${tmpPath}/submitted-answer-cell-type-changed.ipynb`);
   } else {
-    await openNotebook(page, "submitted-answer-cell-type-changed");
+    await page.notebook.open("submitted-answer-cell-type-changed.ipynb");
+    await page.notebook.activate("submitted-answer-cell-type-changed.ipynb");
   }
 
   // click on validate, and expect an error modal
-  await page.locator("button.validate-button").click();
+  await page.locator("jp-button.validate-button").click();
   await waitForErrorModal(page);
 
-  await page.waitForSelector(".nbgrader-ErrorDialog .validation-type-changed");
+  await page.locator(".nbgrader-ErrorDialog .validation-type-changed").waitFor();
 
   // close the modal
   await closeErrorModal(page);
