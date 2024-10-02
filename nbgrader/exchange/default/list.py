@@ -118,7 +118,7 @@ class ExchangeList(ABCExchangeList, Exchange):
 
                 # Check whether feedback has been fetched already.
                 local_feedback_dir = os.path.join(
-                    assignment_dir, 'feedback', info['timestamp'])
+                    assignment_dir, 'feedback', info['timestamp'].replace(':', '_'))
                 local_feedback_path = os.path.join(
                     local_feedback_dir, '{0}.html'.format(nb_info['notebook_id']))
                 has_local_feedback = os.path.isfile(local_feedback_path)
@@ -188,10 +188,10 @@ class ExchangeList(ABCExchangeList, Exchange):
                     full_path_assignment_dir = os.path.abspath(assignment_dir)
                     if os.path.exists(full_path_assignment_dir):
                         info['local_feedback_path'] = os.path.join(
-                            full_path_assignment_dir, 'feedback', info['timestamp'])
+                            full_path_assignment_dir, 'feedback', info['timestamp'].replace(':', '_'))
                     else:
                         info['local_feedback_path'] = os.path.join(
-                            assignment_dir, 'feedback', info['timestamp'])
+                            assignment_dir, 'feedback', info['timestamp'].replace(':', '_'))
                 else:
                     info['local_feedback_path'] = None
 

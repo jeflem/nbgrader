@@ -114,7 +114,7 @@ class ExchangeFetchFeedback(Exchange, ABCExchangeFetchFeedback):
 
     def do_copy(self, src, dest):
         for notebook_id, timestamp, feedbackpath in self.feedback_files:
-            dest_with_timestamp = os.path.join(dest, timestamp)
+            dest_with_timestamp = os.path.join(dest, timestamp.replace(':', '_'))
             if not os.path.isdir(dest_with_timestamp):
                 os.makedirs(dest_with_timestamp)
             new_name = notebook_id + '.html'
