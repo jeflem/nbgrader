@@ -58,6 +58,7 @@ setup_jupyterhub () {
 
     # Copy config file.
     cp jupyterhub_config.py "${jupyterhub_root}/jupyterhub_config.py"
+    cp jupyter_server_config.py /usr/local/etc/jupyter/jupyter_server_config.py
 }
 
 enable_create_assignment () {
@@ -65,8 +66,8 @@ enable_create_assignment () {
     HOME="/home/${USER}"
     local runas="sudo -u ${USER}"
 
-    ${runas} jupyter labextension disable --level=user nbgrader:create-assignment
-    ${runas} jupyter labextension enable --level=user nbgrader:create-assignment
+    ${runas} jupyter labextension disable --level=user @jupyter/nbgrader:create-assignment
+    ${runas} jupyter labextension enable --level=user @jupyter/nbgrader:create-assignment
 }
 
 enable_formgrader () {
@@ -74,8 +75,8 @@ enable_formgrader () {
     HOME="/home/${USER}"
     local runas="sudo -u ${USER}"
 
-    ${runas} jupyter labextension disable --level=user nbgrader:formgrader
-    ${runas} jupyter labextension enable --level=user nbgrader:formgrader
+    ${runas} jupyter labextension disable --level=user @jupyter/nbgrader:formgrader
+    ${runas} jupyter labextension enable --level=user @jupyter/nbgrader:formgrader
     ${runas} jupyter server extension enable --user nbgrader.server_extensions.formgrader
 }
 
@@ -84,8 +85,8 @@ enable_assignment_list () {
     HOME="/home/${USER}"
     local runas="sudo -u ${USER}"
 
-    ${runas} jupyter labextension disable --level=user nbgrader:assignment-list
-    ${runas} jupyter labextension enable --level=user nbgrader:assignment-list
+    ${runas} jupyter labextension disable --level=user @jupyter/nbgrader:assignment-list
+    ${runas} jupyter labextension enable --level=user @jupyter/nbgrader:assignment-list
     ${runas} jupyter server extension enable --user nbgrader.server_extensions.assignment_list
 }
 
@@ -94,8 +95,8 @@ enable_course_list () {
     HOME="/home/${USER}"
     local runas="sudo -u ${USER}"
 
-    ${runas} jupyter labextension disable --level=user nbgrader:course-list
-    ${runas} jupyter labextension enable --level=user nbgrader:course-list
+    ${runas} jupyter labextension disable --level=user @jupyter/nbgrader:course-list
+    ${runas} jupyter labextension enable --level=user @jupyter/nbgrader:course-list
     ${runas} jupyter server extension enable --user nbgrader.server_extensions.course_list
 }
 
