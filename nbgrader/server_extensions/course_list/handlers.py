@@ -39,7 +39,10 @@ class CourseListHandler(JupyterHandler):
 
     def get_base_url(self):
         parts = urlparse(self.request.full_url())
-        base_url = parts.scheme + "://" + parts.netloc
+        #base_url = parts.scheme + "://" + parts.netloc
+        # inside Ananke container we get http, which yields a wrong URL in course list
+        # (only matters if reverse proxy does not redirect HTTP to HTTPS)
+        base_url = "https://" + parts.netloc
         return base_url.rstrip("/")
 
     def load_config(self):
